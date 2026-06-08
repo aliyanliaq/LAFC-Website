@@ -8,6 +8,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
   <style>
     * {
       margin: 0;
@@ -1169,6 +1172,68 @@
       color: var(--primary);
     }
 
+    /* ─── GOOGLE SIGN-IN ─── */
+    .google-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      color: #444;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: 'Inter', sans-serif;
+      white-space: nowrap;
+    }
+    .google-btn:hover {
+      background: #f0f0f0;
+      transform: translateY(-1px);
+    }
+    .google-btn i { color: #ea4335; font-size: 16px; }
+    .user-info {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 8px 4px 4px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 50px;
+    }
+    .user-info img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+    }
+    .user-info .name {
+      font-size: 13px;
+      color: var(--white);
+      font-weight: 500;
+    }
+    .user-info .sign-out-btn {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.5);
+      cursor: pointer;
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: var(--transition);
+      font-family: 'Inter', sans-serif;
+    }
+    .user-info .sign-out-btn:hover {
+      color: #ef4444;
+      background: rgba(239,68,68,0.1);
+    }
+    @media (max-width: 900px) {
+      .google-btn { width: 100%; justify-content: center; padding: 12px 16px; }
+      .user-info { width: 100%; justify-content: center; border-radius: 8px; padding: 8px 12px; }
+    }
+
     /* ─── TOAST ─── */
     .toast {
       position: fixed;
@@ -1198,10 +1263,47 @@
     .toast .icon { color: var(--accent); font-size: 18px; }
 
     /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: clamp(36px, 12vw, 52px); }
+      .hero .motto { font-size: 20px; }
+      .hero p { font-size: 15px; }
+      .section-title { font-size: clamp(26px, 6vw, 36px); }
+      .container { padding: 0 16px; }
+    }
     @media (max-width: 600px) {
-      section { padding: 60px 0; }
+      section { padding: 40px 0; }
       .form-row { grid-template-columns: 1fr; }
       .modal-details { grid-template-columns: 1fr; }
+      .player-card { flex-wrap: wrap; gap: 12px; }
+      .player-card .info { flex: 1 1 100%; order: 3; }
+      .player-card .tag { margin-left: auto; }
+      .contract-card { flex-direction: column; text-align: center; padding: 16px; }
+      .contract-card .info { width: 100%; }
+      .contract-card .contract-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+      .contract-card .contract-meta span { font-size: 12px; }
+      .modal { padding: 24px 16px; }
+      .modal h3 { font-size: 20px; }
+      .modal-avatar { width: 72px; height: 72px; font-size: 28px; }
+      .about-card { padding: 18px; }
+      .rules-note { flex-direction: column; text-align: center; padding: 20px; }
+      .values-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .value-item { padding: 16px 12px; }
+      .rule-card { padding: 24px; }
+      .btn { padding: 12px 24px; font-size: 13px; }
+      .hero-buttons { flex-direction: column; align-items: center; }
+      .section-label { font-size: 10px; }
+      .section-label::before, .section-label::after { width: 16px; }
+      .player-form { padding: 24px; }
+      .contract-form { padding: 24px; }
+    }
+    @media (max-width: 400px) {
+      .values-grid { grid-template-columns: 1fr 1fr; }
+      .hero h1 { font-size: 28px; }
+      .nav-logo .logo-text .club-name { font-size: 16px; }
+      .nav-logo .logo-text .club-tag { font-size: 8px; letter-spacing: 2px; }
+      .nav-logo .logo-icon { width: 36px; height: 36px; }
+      .navbar .container { height: 60px; }
+      .nav-links { top: 60px; }
     }
   </style>
 </head>
@@ -1229,6 +1331,14 @@
         <li><a href="#players">Players</a></li>
         <li><a href="#contracts">Contracts</a></li>
         <li><a href="#rules">Rules</a></li>
+        <li style="margin-left:8px;">
+          <button class="google-btn" id="googleSignInBtn"><i class="fab fa-google"></i> Sign In</button>
+          <div class="user-info" id="userInfo">
+            <img id="userAvatar" src="" alt="">
+            <span class="name" id="userName"></span>
+            <button class="sign-out-btn" id="signOutBtn">Sign Out</button>
+          </div>
+        </li>
       </ul>
     </div>
   </nav>
@@ -1555,6 +1665,30 @@
   </div>
 
   <script>
+    // ═══════════════════════════════════════════
+    // ║  FIREBASE CONFIGURATION
+    // ║  Replace these values with your own from:
+    // ║  https://console.firebase.google.com
+    // ═══════════════════════════════════════════
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // ─── STATE ───
+    let players = [];
+    let contracts = [];
+    let currentUser = null;
+    let syncTimeout = null;
+
     // ─── NAVBAR ───
     const navToggle = document.getElementById('navToggle');
     const navLinks = document.getElementById('navLinks');
@@ -1600,8 +1734,101 @@
       setTimeout(() => t.classList.remove('show'), 3000);
     }
 
-    // ─── PLAYERS DATA ───
-    let players = [];
+    // ─── GOOGLE SIGN-IN ───
+    document.getElementById('googleSignInBtn').addEventListener('click', () => {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider).catch(err => showToast(err.message));
+    });
+
+    document.getElementById('signOutBtn').addEventListener('click', () => {
+      auth.signOut();
+    });
+
+    auth.onAuthStateChanged(user => {
+      const signInBtn = document.getElementById('googleSignInBtn');
+      const userInfo = document.getElementById('userInfo');
+
+      if (user) {
+        currentUser = user;
+        signInBtn.style.display = 'none';
+        userInfo.style.display = 'flex';
+        document.getElementById('userAvatar').src = user.photoURL || '';
+        document.getElementById('userName').textContent = user.displayName || user.email;
+        loadUserData(user.uid);
+      } else {
+        currentUser = null;
+        signInBtn.style.display = 'flex';
+        userInfo.style.display = 'none';
+        players = [];
+        contracts = [];
+        renderPlayers();
+        renderContracts();
+        updateContractDropdown();
+      }
+    });
+
+    // ─── FIRESTORE SYNC ───
+    async function saveUserData(uid) {
+      if (!uid || !players.length && !contracts.length) return;
+
+      try {
+        const batch = db.batch();
+
+        // Save players
+        const playerCol = db.collection('users').doc(uid).collection('players');
+        const playerSnap = await playerCol.get();
+        playerSnap.forEach(doc => batch.delete(doc.ref));
+        players.forEach(p => {
+          const ref = playerCol.doc(String(p.id));
+          batch.set(ref, { ...p });
+        });
+
+        // Save contracts
+        const contractCol = db.collection('users').doc(uid).collection('contracts');
+        const contractSnap = await contractCol.get();
+        contractSnap.forEach(doc => batch.delete(doc.ref));
+        contracts.forEach(c => {
+          const ref = contractCol.doc(String(c.id));
+          batch.set(ref, { ...c });
+        });
+
+        await batch.commit();
+      } catch (err) {
+        console.error('Sync error:', err);
+        showToast('Failed to sync data. Check console for details.');
+      }
+    }
+
+    async function loadUserData(uid) {
+      try {
+        const playerCol = db.collection('users').doc(uid).collection('players');
+        const playerSnap = await playerCol.get();
+        players = [];
+        playerSnap.forEach(doc => players.push(doc.data()));
+
+        const contractCol = db.collection('users').doc(uid).collection('contracts');
+        const contractSnap = await contractCol.get();
+        contracts = [];
+        contractSnap.forEach(doc => contracts.push(doc.data()));
+
+        renderPlayers();
+        renderContracts();
+        updateContractDropdown();
+
+        if (players.length || contracts.length) {
+          showToast('Data loaded from cloud!');
+        }
+      } catch (err) {
+        console.error('Load error:', err);
+        showToast('Failed to load data.');
+      }
+    }
+
+    function triggerSync() {
+      if (!currentUser) return;
+      clearTimeout(syncTimeout);
+      syncTimeout = setTimeout(() => saveUserData(currentUser.uid), 500);
+    }
 
     // ─── PLAYER FORM ───
     document.getElementById('playerForm').addEventListener('submit', function(e) {
@@ -1643,6 +1870,7 @@
       renderPlayers();
       updateContractDropdown();
       document.getElementById('playerForm').reset();
+      triggerSync();
       showToast(`${name} registered successfully!`);
     }
 
@@ -1695,8 +1923,6 @@
     }
 
     // ─── CONTRACTS DATA ───
-    let contracts = [];
-
     document.getElementById('contractForm').addEventListener('submit', function(e) {
       e.preventDefault();
 
@@ -1736,6 +1962,7 @@
       renderPlayers();
       document.getElementById('contractForm').reset();
       document.getElementById('eliteTag').value = 'yes';
+      triggerSync();
       showToast(`Contract issued to ${player.name}${contract.elite ? ' with Elite Tag!' : '!'}`);
     });
 
