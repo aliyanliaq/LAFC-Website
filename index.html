@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lahore Apex Football Club | LAFC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #0d2818;
+      --primary-light: #1a4a2e;
+      --accent: #d4a843;
+      --accent-hover: #c99a2e;
+      --dark: #0a0a0a;
+      --light: #f5f5f0;
+      --white: #ffffff;
+      --gray: #6b7280;
+      --card-bg: #ffffff;
+      --shadow: 0 20px 60px rgba(0,0,0,0.08);
+      --radius: 16px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--light);
+      color: #1a1a2e;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ─── NAVBAR ─── */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(13, 40, 24, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 2px solid rgba(212, 168, 67, 0.3);
+      transition: var(--transition);
+      padding: 0 24px;
+    }
+
+    .navbar.scrolled {
+      background: rgba(13, 40, 24, 0.98);
+      box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+    }
+
+    .navbar .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--white);
+    }
+
+    .nav-logo .logo-icon {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-logo .logo-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .nav-logo .logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nav-logo .logo-text .club-name {
+      font-family: 'Oswald', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      line-height: 1.1;
+      color: var(--white);
+    }
+
+    .nav-logo .logo-text .club-tag {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 50%;
+      transform: translateX(-50%) scaleX(0);
+      width: 60%;
+      height: 2px;
+      background: var(--accent);
+      transition: transform 0.3s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--accent);
+      background: rgba(212,168,67,0.1);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      transform: translateX(-50%) scaleX(1);
+    }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--white);
+      font-size: 24px;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    @media (max-width: 900px) {
+      .nav-toggle { display: block; }
+
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: rgba(13, 40, 24, 0.98);
+        flex-direction: column;
+        padding: 20px;
+        gap: 4px;
+        transform: translateY(-120%);
+        transition: transform 0.4s ease;
+        backdrop-filter: blur(12px);
+        border-bottom: 2px solid rgba(212,168,67,0.2);
+      }
+
+      .nav-links.open { transform: translateY(0); }
+
+      .nav-links a {
+        width: 100%;
+        padding: 12px 16px;
+      }
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0a1a10 0%, #0d2818 40%, #1a4a2e 100%);
+      position: relative;
+      overflow: hidden;
+      padding-top: 70px;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(212,168,67,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 50%, rgba(212,168,67,0.05) 0%, transparent 50%);
+    }
+
+    .hero-pattern {
+      position: absolute;
+      inset: 0;
+      opacity: 0.03;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(255,255,255,0.1) 40px, rgba(255,255,255,0.1) 41px),
+        repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(255,255,255,0.1) 40px, rgba(255,255,255,0.1) 41px);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 40px 24px;
+      max-width: 800px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(212,168,67,0.15);
+      border: 1px solid rgba(212,168,67,0.3);
+      color: var(--accent);
+      padding: 6px 20px;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: clamp(48px, 10vw, 96px);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.05;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 40px rgba(0,0,0,0.3);
+    }
+
+    .hero h1 .accent { color: var(--accent); }
+
+    .hero .since {
+      font-family: 'Oswald', sans-serif;
+      font-size: 18px;
+      color: var(--accent);
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: rgba(255,255,255,0.7);
+      max-width: 600px;
+      margin: 0 auto 32px;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    .hero .motto {
+      font-family: 'Oswald', sans-serif;
+      font-size: 28px;
+      color: var(--accent);
+      letter-spacing: 3px;
+      margin-bottom: 32px;
+      font-weight: 500;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-decoration: none;
+      transition: var(--transition);
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #b8860b);
+      color: var(--primary);
+      box-shadow: 0 8px 30px rgba(212,168,67,0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(212,168,67,0.4);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.4);
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      animation: bounce 2s infinite;
+      text-decoration: none;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ─── SECTION BASE ─── */
+    section {
+      padding: 100px 0;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .section-label::before,
+    .section-label::after {
+      content: '';
+      width: 24px;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    .section-title {
+      font-size: clamp(32px, 5vw, 48px);
+      color: var(--primary);
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+
+    .section-sub {
+      font-size: 17px;
+      color: var(--gray);
+      max-width: 600px;
+      line-height: 1.7;
+    }
+
+    .text-center { text-align: center; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+
+    /* ─── ABOUT ─── */
+    #about {
+      background: var(--white);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      margin-top: 48px;
+      align-items: start;
+    }
+
+    .about-text h3 {
+      font-size: 22px;
+      color: var(--primary);
+      margin: 28px 0 12px;
+    }
+
+    .about-text h3:first-child { margin-top: 0; }
+
+    .about-text p {
+      color: #4a5568;
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+
+    .about-text ul {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .about-text ul li {
+      padding: 8px 0 8px 24px;
+      position: relative;
+      color: #4a5568;
+      font-size: 14px;
+    }
+
+    .about-text ul li::before {
+      content: '\f00c';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 12px;
+    }
+
+    .about-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .about-card {
+      background: var(--light);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+      transition: var(--transition);
+    }
+
+    .about-card:hover {
+      transform: translateX(8px);
+      box-shadow: var(--shadow);
+    }
+
+    .about-card .icon {
+      width: 44px;
+      height: 44px;
+      background: var(--primary);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+
+    .about-card h4 {
+      font-size: 16px;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .about-card p {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .value-item {
+      background: var(--light);
+      border-radius: var(--radius);
+      padding: 24px 16px;
+      text-align: center;
+      transition: var(--transition);
+      border-top: 3px solid var(--accent);
+    }
+
+    .value-item:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow);
+    }
+
+    .value-item .icon {
+      font-size: 28px;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .value-item h5 {
+      font-size: 14px;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .value-item p {
+      font-size: 12px;
+      color: var(--gray);
+      line-height: 1.4;
+    }
+
+    @media (max-width: 900px) {
+      .about-grid { grid-template-columns: 1fr; gap: 32px; }
+      .about-text ul { grid-template-columns: 1fr; }
+      .values-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .values-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ─── PLAYERS ─── */
+    #players {
+      background: var(--light);
+    }
+
+    .players-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-top: 48px;
+    }
+
+    .player-form {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 36px;
+      box-shadow: var(--shadow);
+    }
+
+    .player-form h3 {
+      font-size: 20px;
+      color: var(--primary);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      transition: var(--transition);
+      background: var(--light);
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(212,168,67,0.1);
+      background: var(--white);
+    }
+
+    .form-group textarea { resize: vertical; min-height: 80px; }
+
+    .form-group input[type="file"] {
+      padding: 10px;
+      background: var(--light);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .players-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .player-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      transition: var(--transition);
+      border: 1px solid transparent;
+    }
+
+    .player-card:hover {
+      border-color: rgba(212,168,67,0.3);
+      box-shadow: var(--shadow);
+      transform: translateX(4px);
+    }
+
+    .player-card .avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-family: 'Oswald', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .player-card .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .player-card .info { flex: 1; }
+
+    .player-card .info h4 {
+      font-size: 16px;
+      color: var(--primary);
+      margin-bottom: 2px;
+    }
+
+    .player-card .info .position {
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .player-card .info .meta {
+      font-size: 12px;
+      color: var(--gray);
+      margin-top: 4px;
+    }
+
+    .player-card .tag {
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .tag-elite {
+      background: linear-gradient(135deg, var(--accent), #b8860b);
+      color: var(--primary);
+    }
+
+    .tag-standard {
+      background: #e5e7eb;
+      color: var(--gray);
+    }
+
+    .empty-players {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--gray);
+    }
+
+    .empty-players .icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.3;
+    }
+
+    @media (max-width: 900px) {
+      .players-layout { grid-template-columns: 1fr; }
+    }
+
+    /* ─── CONTRACTS ─── */
+    #contracts {
+      background: var(--white);
+    }
+
+    .contracts-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-top: 48px;
+    }
+
+    .contract-form {
+      background: linear-gradient(135deg, var(--primary), #0a1a10);
+      border-radius: var(--radius);
+      padding: 36px;
+      color: var(--white);
+      box-shadow: 0 20px 60px rgba(13,40,24,0.3);
+    }
+
+    .contract-form h3 {
+      font-size: 20px;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .contract-form .sub {
+      color: rgba(255,255,255,0.6);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    .contract-form .form-group label {
+      color: rgba(255,255,255,0.8);
+    }
+
+    .contract-form .form-group input,
+    .contract-form .form-group select {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.15);
+      color: var(--white);
+    }
+
+    .contract-form .form-group input:focus,
+    .contract-form .form-group select:focus {
+      border-color: var(--accent);
+      background: rgba(255,255,255,0.12);
+    }
+
+    .contract-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .contract-card {
+      background: var(--light);
+      border-radius: var(--radius);
+      padding: 24px;
+      border: 1px solid #e5e7eb;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .contract-card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow);
+    }
+
+    .contract-card .info h4 {
+      font-size: 16px;
+      color: var(--primary);
+    }
+
+    .contract-card .info .contract-meta {
+      font-size: 13px;
+      color: var(--gray);
+      margin-top: 4px;
+    }
+
+    .contract-card .info .contract-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .contract-card .elite-badge {
+      background: linear-gradient(135deg, var(--accent), #b8860b);
+      color: var(--primary);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    .contract-card .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-active { color: #059669; }
+    .status-inactive { color: #dc2626; }
+
+    @media (max-width: 900px) {
+      .contracts-layout { grid-template-columns: 1fr; }
+      .contract-card { flex-direction: column; text-align: center; }
+    }
+
+    /* ─── RULES ─── */
+    #rules {
+      background: var(--light);
+    }
+
+    .rules-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .rule-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+    }
+
+    .rule-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--primary));
+    }
+
+    .rule-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow);
+      border-color: transparent;
+    }
+
+    .rule-number {
+      font-family: 'Oswald', sans-serif;
+      font-size: 48px;
+      font-weight: 700;
+      color: rgba(212,168,67,0.15);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .rule-card h4 {
+      font-size: 17px;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .rule-card p {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.7;
+    }
+
+    .rule-card .icon {
+      font-size: 24px;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .rules-note {
+      margin-top: 48px;
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 32px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .rules-note .icon {
+      font-size: 36px;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .rules-note p {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.7;
+    }
+
+    @media (max-width: 900px) {
+      .rules-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--primary);
+      padding: 48px 0 24px;
+      color: rgba(255,255,255,0.7);
+    }
+
+    footer .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 24px;
+    }
+
+    footer .logo-icon {
+      width: 60px;
+      height: 60px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    footer .logo-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    footer .club-name {
+      font-family: 'Oswald', sans-serif;
+      font-size: 20px;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    footer .motto {
+      color: var(--accent);
+      font-family: 'Oswald', sans-serif;
+      font-size: 14px;
+      letter-spacing: 2px;
+    }
+
+    footer .social {
+      display: flex;
+      gap: 16px;
+    }
+
+    footer .social a {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      transition: var(--transition);
+      font-size: 18px;
+    }
+
+    footer .social a:hover {
+      background: var(--accent);
+      color: var(--primary);
+      transform: translateY(-3px);
+    }
+
+    footer .copyright {
+      font-size: 13px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 20px;
+      width: 100%;
+    }
+
+    /* ─── MODAL ─── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      z-index: 3000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition);
+    }
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .modal {
+      background: var(--white);
+      border-radius: var(--radius);
+      max-width: 520px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 36px;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.3);
+      transform: scale(0.9);
+      transition: var(--transition);
+      position: relative;
+    }
+    .modal-overlay.open .modal {
+      transform: scale(1);
+    }
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: var(--light);
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray);
+      transition: var(--transition);
+    }
+    .modal-close:hover {
+      background: #e5e7eb;
+      color: var(--dark);
+    }
+    .modal-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 16px;
+      display: block;
+      background: var(--light);
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid var(--accent);
+    }
+    .modal h3 {
+      text-align: center;
+      font-size: 24px;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+    .modal .elite-badge-lg {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--accent), #b8860b);
+      color: var(--primary);
+      padding: 4px 16px;
+      border-radius: 50px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 8px auto 16px;
+      text-align: center;
+    }
+    .modal-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .modal-details .detail {
+      background: var(--light);
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .modal-details .detail .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gray);
+      font-weight: 600;
+    }
+    .modal-details .detail .value {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-top: 2px;
+    }
+    .modal .bio-section {
+      margin-top: 16px;
+      background: var(--light);
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .modal .bio-section .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gray);
+      font-weight: 600;
+    }
+    .modal .bio-section .value {
+      font-size: 14px;
+      color: var(--primary);
+      margin-top: 4px;
+      line-height: 1.6;
+    }
+    .modal .modal-center {
+      text-align: center;
+    }
+    .btn-details {
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+    .btn-details:hover {
+      background: var(--accent);
+      color: var(--primary);
+    }
+
+    /* ─── TOAST ─── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--primary);
+      color: var(--white);
+      padding: 16px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateY(120px);
+      opacity: 0;
+      transition: all 0.4s ease;
+      z-index: 2000;
+      border-left: 4px solid var(--accent);
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast .icon { color: var(--accent); font-size: 18px; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 600px) {
+      section { padding: 60px 0; }
+      .form-row { grid-template-columns: 1fr; }
+      .modal-details { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ NAVBAR ═══ -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="#" class="nav-logo">
+        <div class="logo-icon">
+          <img src="logo.png" alt="LAFC Logo">
+        </div>
+        <div class="logo-text">
+          <span class="club-name">Lahore Apex</span>
+          <span class="club-tag">Football Club</span>
+        </div>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about" class="active">About</a></li>
+        <li><a href="#players">Players</a></li>
+        <li><a href="#contracts">Contracts</a></li>
+        <li><a href="#rules">Rules</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero" id="home">
+    <div class="hero-pattern"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Est. 2025</div>
+      <h1>Lahore Apex<br><span class="accent">Football Club</span></h1>
+      <div class="since">Since 2025</div>
+      <p>A dynamic football organization dedicated to promoting football excellence, youth development, and sportsmanship in Pakistan.</p>
+      <div class="motto">&ldquo;Rise Above, Play Beyond.&rdquo;</div>
+      <div class="hero-buttons">
+        <a href="#about" class="btn btn-primary"><i class="fas fa-info-circle"></i> About Us</a>
+        <a href="#players" class="btn btn-outline"><i class="fas fa-users"></i> Our Players</a>
+      </div>
+    </div>
+    <a href="#about" class="hero-scroll">
+      <span>Scroll Down</span>
+      <i class="fas fa-chevron-down"></i>
+    </a>
+  </section>
+
+  <!-- ═══ ABOUT ═══ -->
+  <section id="about">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-label justify-center" style="justify-content:center;">About Club</div>
+        <h2 class="section-title">Lahore Apex Football Club</h2>
+        <p class="section-sub mx-auto">Since 2025 &middot; Rising Above, Playing Beyond</p>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-text">
+          <h3>Introduction</h3>
+          <p>Lahore Apex Football Club is a dynamic and ambitious football organization established with the vision of promoting football excellence, youth development, and sportsmanship in Pakistan. Based in Lahore, the club is dedicated to providing talented players with opportunities to develop their skills, compete at higher levels, and represent their community with pride.</p>
+          <p>The club aims to create a professional football environment where players can grow both athletically and personally. Through structured training programs, competitive participation, and community engagement, Lahore Apex Football Club seeks to contribute to the development of football in Pakistan while fostering discipline, teamwork, and leadership among its members.</p>
+
+          <h3>Our Mission</h3>
+          <ul>
+            <li>Provide quality football training and development</li>
+            <li>Nurture young talent through professional coaching</li>
+            <li>Promote sportsmanship, discipline, and teamwork</li>
+            <li>Compete in local, regional, and national competitions</li>
+            <li>Grow football's popularity in Pakistan</li>
+          </ul>
+
+          <h3>Club Objectives</h3>
+          <ul>
+            <li>Develop football skills and technical abilities</li>
+            <li>Create pathways to higher competition levels</li>
+            <li>Organize tournaments and leagues</li>
+            <li>Promote healthy lifestyles through sports</li>
+            <li>Build community relationships</li>
+            <li>Encourage inclusivity and equal opportunities</li>
+          </ul>
+
+          <h3>Motive of Establishment</h3>
+          <p>The primary motive behind establishing Lahore Apex Football Club is to provide a professional platform for young football enthusiasts to showcase and enhance their talent. The club recognizes the growing passion for football in Pakistan and aims to bridge the gap between grassroots football and professional opportunities.</p>
+        </div>
+
+        <div class="about-cards">
+          <div class="about-card">
+            <div class="icon"><i class="fas fa-eye"></i></div>
+            <h4>Our Vision</h4>
+            <p>To become one of Pakistan's leading football clubs by developing talented players, promoting professional standards, and creating a sustainable football culture that inspires future generations.</p>
+          </div>
+          <div class="about-card">
+            <div class="icon"><i class="fas fa-bullseye"></i></div>
+            <h4>Our Mission</h4>
+            <p>To provide quality football training, nurture young talent through professional coaching, and compete successfully while promoting sportsmanship and discipline.</p>
+          </div>
+          <div class="about-card">
+            <div class="icon"><i class="fas fa-trophy"></i></div>
+            <h4>Long-Term Goals</h4>
+            <p>Establish a recognized football academy, compete nationally, develop players for professional clubs, build modern training facilities, and become a leading football institution in Pakistan.</p>
+          </div>
+          <div class="about-card">
+            <div class="icon"><i class="fas fa-calendar-alt"></i></div>
+            <h4>Club Activities</h4>
+            <p>Professional training sessions, youth development programs, league participation, coaching workshops, community outreach, and talent identification camps.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="values-grid">
+        <div class="value-item">
+          <div class="icon"><i class="fas fa-star"></i></div>
+          <h5>Excellence</h5>
+          <p>High standards in training &amp; conduct</p>
+        </div>
+        <div class="value-item">
+          <div class="icon"><i class="fas fa-scale-balanced"></i></div>
+          <h5>Integrity</h5>
+          <p>Honesty, fairness &amp; respect</p>
+        </div>
+        <div class="value-item">
+          <div class="icon"><i class="fas fa-handshake"></i></div>
+          <h5>Teamwork</h5>
+          <p>Collaboration &amp; unity</p>
+        </div>
+        <div class="value-item">
+          <div class="icon"><i class="fas fa-clock"></i></div>
+          <h5>Discipline</h5>
+          <p>Responsible &amp; committed</p>
+        </div>
+        <div class="value-item">
+          <div class="icon"><i class="fas fa-heart"></i></div>
+          <h5>Community</h5>
+          <p>Connecting with supporters</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PLAYERS ═══ -->
+  <section id="players">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-label justify-center" style="justify-content:center;">Team Roster</div>
+        <h2 class="section-title">Our Players</h2>
+        <p class="section-sub mx-auto">Register player details and build your squad</p>
+      </div>
+
+      <div class="players-layout">
+        <div class="player-form">
+          <h3><i class="fas fa-user-plus" style="color:var(--accent);"></i> Add New Player</h3>
+          <form id="playerForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="playerName" placeholder="e.g. Ahmed Khan" required>
+              </div>
+              <div class="form-group">
+                <label>Age</label>
+                <input type="number" id="playerAge" placeholder="e.g. 22" min="15" max="45" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Position</label>
+                <select id="playerPosition" required>
+                  <option value="">Select Position</option>
+                  <option value="Goalkeeper">Goalkeeper</option>
+                  <option value="Defender">Defender</option>
+                  <option value="Midfielder">Midfielder</option>
+                  <option value="Forward">Forward</option>
+                  <option value="Striker">Striker</option>
+                  <option value="Winger">Winger</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Jersey Number</label>
+                <input type="number" id="playerJersey" placeholder="e.g. 10" min="1" max="99">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Profile Picture</label>
+              <input type="file" id="playerPhoto" accept="image/*">
+            </div>
+            <div class="form-group">
+              <label>Bio / Notes</label>
+              <textarea id="playerBio" placeholder="Brief description about the player..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+              <i class="fas fa-plus"></i> Add Player
+            </button>
+          </form>
+        </div>
+
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+            <h3 style="font-size:18px;color:var(--primary);">Registered Players</h3>
+            <span id="playerCount" style="font-size:13px;color:var(--gray);padding:4px 12px;background:var(--white);border-radius:50px;">0 players</span>
+          </div>
+          <div class="players-list" id="playersList">
+            <div class="empty-players">
+              <div class="icon"><i class="fas fa-users"></i></div>
+              <p>No players registered yet.<br>Add your first player using the form.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CONTRACTS ═══ -->
+  <section id="contracts">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-label justify-center" style="justify-content:center;">Player Contracts</div>
+        <h2 class="section-title">Contract &amp; Elite Tags</h2>
+        <p class="section-sub mx-auto">Register contracts for your players and award Elite Player status</p>
+      </div>
+
+      <div class="contracts-layout">
+        <div class="contract-form">
+          <h3><i class="fas fa-file-signature"></i> Issue Contract</h3>
+          <p class="sub">Register a player and grant them the Elite Player tag.</p>
+          <form id="contractForm">
+            <div class="form-group">
+              <label>Select Player</label>
+              <select id="contractPlayer" required>
+                <option value="">-- No players registered yet --</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Contract Duration</label>
+                <select id="contractDuration" required>
+                  <option value="6 Months">6 Months</option>
+                  <option value="1 Year">1 Year</option>
+                  <option value="2 Years">2 Years</option>
+                  <option value="3 Years" selected>3 Years</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Status</label>
+                <select id="contractStatus">
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label style="color:var(--accent);"><i class="fas fa-crown"></i> Award Elite Player Tag</label>
+              <select id="eliteTag">
+                <option value="yes">Yes - Grant Elite Tag</option>
+                <option value="no">No - Standard Player</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;background:linear-gradient(135deg, var(--accent), #b8860b);">
+              <i class="fas fa-file-contract"></i> Register Contract
+            </button>
+          </form>
+        </div>
+
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+            <h3 style="font-size:18px;color:var(--primary);">Contract Register</h3>
+            <span id="contractCount" style="font-size:13px;color:var(--gray);padding:4px 12px;background:var(--light);border-radius:50px;">0 contracts</span>
+          </div>
+          <div class="contract-list" id="contractList">
+            <div class="empty-players">
+              <div class="icon"><i class="fas fa-file-contract"></i></div>
+              <p>No contracts issued yet.<br>Register a player to issue a contract.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ RULES ═══ -->
+  <section id="rules">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-label justify-center" style="justify-content:center;">Club Policies</div>
+        <h2 class="section-title">Rules &amp; Regulations</h2>
+        <p class="section-sub mx-auto">Every player must follow these rules to maintain discipline and professionalism.</p>
+      </div>
+
+      <div class="rules-grid">
+        <div class="rule-card">
+          <div class="rule-number">01</div>
+          <div class="icon"><i class="fas fa-check-circle"></i></div>
+          <h4>Match Availability Confirmation</h4>
+          <p>Every player must confirm their availability for a match at least <strong>2 days before</strong> the scheduled match. Failure to confirm on time may result in exclusion from the squad.</p>
+        </div>
+        <div class="rule-card">
+          <div class="rule-number">02</div>
+          <div class="icon"><i class="fas fa-ban"></i></div>
+          <h4>No Refund Policy</h4>
+          <p>The advance amount will <strong>not be refunded</strong> if the player does not show up for the match after confirming availability. No excuses will be accepted. This policy is strictly enforced.</p>
+        </div>
+        <div class="rule-card">
+          <div class="rule-number">03</div>
+          <div class="icon"><i class="fas fa-gavel"></i></div>
+          <h4>Management &amp; Captain's Authority</h4>
+          <p>Every player must follow the instructions of the management team. While it is your choice to participate in a match, once on the field, the <strong>captain's instructions are final</strong> and must be followed without question.</p>
+        </div>
+      </div>
+
+      <div class="rules-note">
+        <div class="icon"><i class="fas fa-shield"></i></div>
+        <div>
+          <p><strong>Important:</strong> These rules are designed to maintain discipline, fairness, and professionalism within Lahore Apex Football Club. All players are expected to read, understand, and comply with these regulations. Violation of any rule may result in disciplinary action, including suspension or termination of the player's contract.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer>
+    <div class="container">
+      <div class="logo-icon"><img src="logo.png" alt="LAFC Logo"></div>
+      <div class="club-name">Lahore Apex Football Club</div>
+      <div class="motto">&ldquo;Rise Above, Play Beyond.&rdquo;</div>
+      <div class="social">
+        <a href="https://chat.whatsapp.com/HvaEb9RBlRXFYYsZ7UZCsg" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/lahore_apex_fc?igsh=ODA3cjM5czFsZnRx" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="mailto:lafclahoreapexfootballclub@gmail.com"><i class="fas fa-envelope"></i></a>
+      </div>
+      <div class="copyright">
+        &copy; 2025 Lahore Apex Football Club. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══ TOAST ═══ -->
+  <div class="toast" id="toast">
+    <span class="icon"><i class="fas fa-check-circle"></i></span>
+    <span id="toastMessage">Player added successfully!</span>
+  </div>
+
+  <!-- ═══ CONTRACT DETAIL MODAL ═══ -->
+  <div class="modal-overlay" id="contractModal">
+    <div class="modal">
+      <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    // ─── NAVBAR ───
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    navToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+        link.classList.add('active');
+      });
+    });
+
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+
+      const sections = ['about', 'players', 'contracts', 'rules'];
+      let current = '';
+      sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && window.scrollY >= el.offsetTop - 200) {
+          current = id;
+        }
+      });
+      document.querySelectorAll('.nav-links a').forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+      });
+    });
+
+    // ─── TOAST ───
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toastMessage').textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // ─── PLAYERS DATA ───
+    let players = [];
+
+    // ─── PLAYER FORM ───
+    document.getElementById('playerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('playerName').value.trim();
+      const age = document.getElementById('playerAge').value;
+      const position = document.getElementById('playerPosition').value;
+      const jersey = document.getElementById('playerJersey').value || '--';
+      const bio = document.getElementById('playerBio').value.trim() || 'No bio added.';
+      const photoInput = document.getElementById('playerPhoto');
+
+      let photoData = null;
+      if (photoInput.files && photoInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          photoData = event.target.result;
+          addPlayer(name, age, position, jersey, bio, photoData);
+        };
+        reader.readAsDataURL(photoInput.files[0]);
+      } else {
+        addPlayer(name, age, position, jersey, bio, null);
+      }
+    });
+
+    function addPlayer(name, age, position, jersey, bio, photo) {
+      const player = {
+        id: Date.now(),
+        name,
+        age,
+        position,
+        jersey,
+        bio,
+        photo,
+        elite: false
+      };
+
+      players.push(player);
+      renderPlayers();
+      updateContractDropdown();
+      document.getElementById('playerForm').reset();
+      showToast(`${name} registered successfully!`);
+    }
+
+    function renderPlayers() {
+      const list = document.getElementById('playersList');
+      const count = document.getElementById('playerCount');
+      count.textContent = `${players.length} player${players.length !== 1 ? 's' : ''}`;
+
+      if (players.length === 0) {
+        list.innerHTML = `
+          <div class="empty-players">
+            <div class="icon"><i class="fas fa-users"></i></div>
+            <p>No players registered yet.<br>Add your first player using the form.</p>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = players.map(p => {
+        const initials = p.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+        const avatarContent = p.photo
+          ? `<img src="${p.photo}" alt="${p.name}">`
+          : initials;
+
+        return `
+          <div class="player-card">
+            <div class="avatar">${avatarContent}</div>
+            <div class="info">
+              <h4>${p.name}</h4>
+              <div class="position">${p.position} &middot; #${p.jersey}</div>
+              <div class="meta">Age: ${p.age} &middot; ${p.bio}</div>
+            </div>
+            <span class="tag ${p.elite ? 'tag-elite' : 'tag-standard'}">
+              ${p.elite ? 'ELITE' : 'STANDARD'}
+            </span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ─── CONTRACT DROPDOWN ───
+    function updateContractDropdown() {
+      const select = document.getElementById('contractPlayer');
+      if (players.length === 0) {
+        select.innerHTML = '<option value="">-- No players registered yet --</option>';
+        return;
+      }
+      select.innerHTML = '<option value="">-- Select a Player --</option>' +
+        players.map(p => `<option value="${p.id}">${p.name} (${p.position})</option>`).join('');
+    }
+
+    // ─── CONTRACTS DATA ───
+    let contracts = [];
+
+    document.getElementById('contractForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const playerId = document.getElementById('contractPlayer').value;
+      const duration = document.getElementById('contractDuration').value;
+      const status = document.getElementById('contractStatus').value;
+      const eliteTag = document.getElementById('eliteTag').value;
+
+      if (!playerId) {
+        showToast('Please select a player.');
+        return;
+      }
+
+      const player = players.find(p => p.id == playerId);
+      if (!player) {
+        showToast('Player not found.');
+        return;
+      }
+
+      if (eliteTag === 'yes') {
+        player.elite = true;
+      }
+
+      const contract = {
+        id: Date.now(),
+        playerId: player.id,
+        playerName: player.name,
+        position: player.position,
+        duration,
+        status,
+        elite: eliteTag === 'yes',
+        date: new Date().toLocaleDateString('en-GB')
+      };
+
+      contracts.push(contract);
+      renderContracts();
+      renderPlayers();
+      document.getElementById('contractForm').reset();
+      document.getElementById('eliteTag').value = 'yes';
+      showToast(`Contract issued to ${player.name}${contract.elite ? ' with Elite Tag!' : '!'}`);
+    });
+
+    function renderContracts() {
+      const list = document.getElementById('contractList');
+      const count = document.getElementById('contractCount');
+      count.textContent = `${contracts.length} contract${contracts.length !== 1 ? 's' : ''}`;
+
+      if (contracts.length === 0) {
+        list.innerHTML = `
+          <div class="empty-players">
+            <div class="icon"><i class="fas fa-file-contract"></i></div>
+            <p>No contracts issued yet.<br>Register a player to issue a contract.</p>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = contracts.map(c => {
+        const statusIcon = c.status === 'Active'
+          ? '<span class="status status-active"><i class="fas fa-circle" style="font-size:8px;"></i> Active</span>'
+          : '<span class="status status-inactive"><i class="fas fa-circle" style="font-size:8px;"></i> Inactive</span>';
+
+        return `
+          <div class="contract-card">
+            <div class="info">
+              <h4>${c.playerName}</h4>
+              <div class="contract-meta">
+                <span><i class="fas fa-futbol"></i> ${c.position}</span>
+                &middot;
+                <span><i class="fas fa-clock"></i> ${c.duration}</span>
+                &middot;
+                <span><i class="fas fa-calendar"></i> ${c.date}</span>
+                &middot;
+                ${statusIcon}
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              ${c.elite ? '<div class="elite-badge"><i class="fas fa-crown"></i> ELITE</div>' : ''}
+              <button class="btn-details" data-contract-id="${c.id}"><i class="fas fa-eye"></i> Details</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.querySelectorAll('.btn-details').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const contractId = this.getAttribute('data-contract-id');
+          const contract = contracts.find(c => c.id == contractId);
+          if (contract) openContractModal(contract);
+        });
+      });
+    }
+
+    // ─── CONTRACT DETAIL MODAL ───
+    function openContractModal(contract) {
+      const player = players.find(p => p.id == contract.playerId);
+      if (!player) return;
+
+      const initials = player.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      const avatarContent = player.photo
+        ? `<img src="${player.photo}" alt="${player.name}" class="modal-avatar">`
+        : `<div class="modal-avatar">${initials}</div>`;
+
+      const content = document.getElementById('modalContent');
+      content.innerHTML = `
+        <div class="modal-center">
+          ${avatarContent}
+          <h3>${player.name}</h3>
+          ${contract.elite ? '<div class="elite-badge-lg"><i class="fas fa-crown"></i> ELITE PLAYER</div>' : ''}
+        </div>
+        <div class="modal-details">
+          <div class="detail">
+            <div class="label">Position</div>
+            <div class="value">${player.position}</div>
+          </div>
+          <div class="detail">
+            <div class="label">Jersey #</div>
+            <div class="value">${player.jersey}</div>
+          </div>
+          <div class="detail">
+            <div class="label">Age</div>
+            <div class="value">${player.age}</div>
+          </div>
+          <div class="detail">
+            <div class="label">Contract Duration</div>
+            <div class="value">${contract.duration}</div>
+          </div>
+          <div class="detail">
+            <div class="label">Status</div>
+            <div class="value" style="color:${contract.status === 'Active' ? '#059669' : '#dc2626'}">${contract.status}</div>
+          </div>
+          <div class="detail">
+            <div class="label">Issued On</div>
+            <div class="value">${contract.date}</div>
+          </div>
+        </div>
+        <div class="bio-section">
+          <div class="label">Bio</div>
+          <div class="value">${player.bio}</div>
+        </div>
+      `;
+
+      document.getElementById('contractModal').classList.add('open');
+    }
+
+    document.getElementById('modalClose').addEventListener('click', () => {
+      document.getElementById('contractModal').classList.remove('open');
+    });
+
+    document.getElementById('contractModal').addEventListener('click', function(e) {
+      if (e.target === this) this.classList.remove('open');
+    });
+
+    // ─── INIT ───
+    renderPlayers();
+    renderContracts();
+    updateContractDropdown();
+  </script>
+</body>
+</html>
