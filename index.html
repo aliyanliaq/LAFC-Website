@@ -191,19 +191,44 @@
         right: 0;
         background: rgba(13, 40, 24, 0.98);
         flex-direction: column;
-        padding: 20px;
-        gap: 4px;
+        padding: 16px 20px 24px;
+        gap: 2px;
         transform: translateY(-120%);
-        transition: transform 0.4s ease;
-        backdrop-filter: blur(12px);
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        backdrop-filter: blur(16px);
         border-bottom: 2px solid rgba(212,168,67,0.2);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        max-height: calc(100vh - 70px);
+        overflow-y: auto;
       }
 
       .nav-links.open { transform: translateY(0); }
 
       .nav-links a {
         width: 100%;
-        padding: 12px 16px;
+        padding: 14px 20px;
+        font-size: 14px;
+        border-radius: 10px;
+        text-align: center;
+        letter-spacing: 1px;
+      }
+
+      .nav-links a:hover,
+      .nav-links a.active {
+        background: rgba(212,168,67,0.12);
+      }
+
+      .nav-links a::after { display: none; }
+
+      .nav-links li {
+        width: 100%;
+      }
+
+      .nav-links li:last-child {
+        margin-left: 0 !important;
+        margin-top: 8px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(212,168,67,0.15);
       }
     }
 
@@ -1234,6 +1259,209 @@
       .user-info { width: 100%; justify-content: center; border-radius: 8px; padding: 8px 12px; }
     }
 
+    /* ─── AUTH GATE ─── */
+    .auth-gate {
+      position: relative;
+    }
+    .auth-gate .auth-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(245,245,240,0.85);
+      backdrop-filter: blur(4px);
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      padding: 24px;
+      text-align: center;
+      gap: 12px;
+      min-height: 200px;
+    }
+    .auth-gate .auth-overlay .icon {
+      font-size: 40px;
+      color: var(--accent);
+      opacity: 0.6;
+    }
+    .auth-gate .auth-overlay h4 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 18px;
+      color: var(--primary);
+      text-transform: uppercase;
+    }
+    .auth-gate .auth-overlay p {
+      font-size: 14px;
+      color: var(--gray);
+      max-width: 280px;
+      line-height: 1.5;
+    }
+    .auth-gate .auth-overlay .google-btn {
+      justify-content: center;
+      padding: 10px 24px;
+      font-size: 14px;
+    }
+    .auth-gate.authenticated .auth-overlay {
+      display: none;
+    }
+
+    /* ─── FULL CONTRACT PAGE ─── */
+    #full-contract {
+      background: var(--white);
+    }
+    .contract-detail-card {
+      background: var(--light);
+      border-radius: var(--radius);
+      padding: 36px;
+      margin-top: 32px;
+      border: 1px solid #e5e7eb;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .contract-detail-card .header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #e5e7eb;
+    }
+    .contract-detail-card .header .avatar-lg {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-family: 'Oswald', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .contract-detail-card .header .avatar-lg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .contract-detail-card .header .info h3 {
+      font-size: 24px;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+    .contract-detail-card .header .info .pos {
+      font-size: 14px;
+      color: var(--accent);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .contract-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .contract-detail-grid .field {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .contract-detail-grid .field .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gray);
+      font-weight: 600;
+    }
+    .contract-detail-grid .field .value {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-top: 4px;
+    }
+    .contract-detail-card .bio-field {
+      margin-top: 16px;
+      background: var(--white);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .contract-detail-card .bio-field .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gray);
+      font-weight: 600;
+    }
+    .contract-detail-card .bio-field .value {
+      font-size: 14px;
+      color: var(--primary);
+      margin-top: 4px;
+      line-height: 1.6;
+    }
+    .contract-detail-card .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--gray);
+    }
+    .contract-detail-card .empty-state .icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.3;
+    }
+    .contract-select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
+      outline: none;
+      transition: var(--transition);
+    }
+    .contract-select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(212,168,67,0.1);
+    }
+    @media (max-width: 600px) {
+      .contract-detail-grid { grid-template-columns: 1fr; }
+      .contract-detail-card .header { flex-direction: column; text-align: center; }
+    }
+
+    /* ─── CONTACT / INFO BAR ─── */
+    .info-bar {
+      background: var(--primary);
+      padding: 12px 0;
+      border-top: 2px solid rgba(212,168,67,0.2);
+      border-bottom: 2px solid rgba(212,168,67,0.2);
+    }
+    .info-bar .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .info-bar a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+    }
+    .info-bar a:hover {
+      color: var(--accent);
+    }
+    .info-bar i {
+      color: var(--accent);
+      font-size: 16px;
+    }
+
     /* ─── TOAST ─── */
     .toast {
       position: fixed;
@@ -1314,7 +1542,7 @@
     <div class="container">
       <a href="#" class="nav-logo">
         <div class="logo-icon">
-          <img src="logo.png" alt="LAFC Logo">
+          <img src="logo.svg" alt="LAFC Logo">
         </div>
         <div class="logo-text">
           <span class="club-name">Lahore Apex</span>
@@ -1323,13 +1551,14 @@
       </a>
 
       <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
-        <i class="fas fa-bars"></i>
+        <i class="fas fa-bars" id="navIcon"></i>
       </button>
 
       <ul class="nav-links" id="navLinks">
         <li><a href="#about" class="active">About</a></li>
         <li><a href="#players">Players</a></li>
         <li><a href="#contracts">Contracts</a></li>
+        <li><a href="#full-contract">Full Contract</a></li>
         <li><a href="#rules">Rules</a></li>
         <li style="margin-left:8px;">
           <button class="google-btn" id="googleSignInBtn"><i class="fab fa-google"></i> Sign In</button>
@@ -1465,7 +1694,13 @@
       </div>
 
       <div class="players-layout">
-        <div class="player-form">
+        <div class="player-form auth-gate" id="addPlayerGate">
+          <div class="auth-overlay" id="addPlayerOverlay">
+            <div class="icon"><i class="fas fa-lock"></i></div>
+            <h4>Sign In Required</h4>
+            <p>You need to sign in with Google to add new players.</p>
+            <button class="google-btn" onclick="document.getElementById('googleSignInBtn').click()"><i class="fab fa-google"></i> Sign In with Google</button>
+          </div>
           <h3><i class="fas fa-user-plus" style="color:var(--accent);"></i> Add New Player</h3>
           <form id="playerForm">
             <div class="form-row">
@@ -1536,7 +1771,13 @@
       </div>
 
       <div class="contracts-layout">
-        <div class="contract-form">
+        <div class="contract-form auth-gate" id="addContractGate">
+          <div class="auth-overlay" id="addContractOverlay">
+            <div class="icon"><i class="fas fa-lock"></i></div>
+            <h4>Sign In Required</h4>
+            <p>You need to sign in with Google to issue contracts.</p>
+            <button class="google-btn" onclick="document.getElementById('googleSignInBtn').click()"><i class="fab fa-google"></i> Sign In with Google</button>
+          </div>
           <h3><i class="fas fa-file-signature"></i> Issue Contract</h3>
           <p class="sub">Register a player and grant them the Elite Player tag.</p>
           <form id="contractForm">
@@ -1593,6 +1834,40 @@
     </div>
   </section>
 
+  <!-- ═══ FULL CONTRACT VIEW ═══ -->
+  <section id="full-contract">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-label justify-center" style="justify-content:center;">Contract Details</div>
+        <h2 class="section-title">See Full Contract</h2>
+        <p class="section-sub mx-auto">View the complete contract details for any registered player.</p>
+      </div>
+
+      <div class="contract-detail-card auth-gate" id="fullContractGate">
+        <div class="auth-overlay" id="fullContractOverlay">
+          <div class="icon"><i class="fas fa-lock"></i></div>
+          <h4>Sign In Required</h4>
+          <p>You need to sign in with Google to view full contract details.</p>
+          <button class="google-btn" onclick="document.getElementById('googleSignInBtn').click()"><i class="fab fa-google"></i> Sign In with Google</button>
+        </div>
+
+        <div style="margin-bottom:20px;">
+          <label style="font-size:13px;font-weight:600;color:var(--primary);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:8px;">Select Contract</label>
+          <select class="contract-select" id="fullContractSelect">
+            <option value="">-- Select a contract --</option>
+          </select>
+        </div>
+
+        <div id="fullContractDetail">
+          <div class="empty-state">
+            <div class="icon"><i class="fas fa-file-contract"></i></div>
+            <p>Select a contract above to view full details.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ RULES ═══ -->
   <section id="rules">
     <div class="container">
@@ -1635,14 +1910,18 @@
   <!-- ═══ FOOTER ═══ -->
   <footer>
     <div class="container">
-      <div class="logo-icon"><img src="logo.png" alt="LAFC Logo"></div>
+      <div class="logo-icon"><img src="logo.svg" alt="LAFC Logo"></div>
       <div class="club-name">Lahore Apex Football Club</div>
       <div class="motto">&ldquo;Rise Above, Play Beyond.&rdquo;</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:rgba(255,255,255,0.7);">
+        <i class="fas fa-envelope" style="color:var(--accent);"></i>
+        <a href="mailto:lahoreapexfc@gmail.com" style="color:rgba(255,255,255,0.7);text-decoration:none;">lahoreapexfc@gmail.com</a>
+      </div>
       <div class="social">
         <a href="https://chat.whatsapp.com/HvaEb9RBlRXFYYsZ7UZCsg" target="_blank"><i class="fab fa-whatsapp"></i></a>
         <a href="#"><i class="fab fa-facebook-f"></i></a>
         <a href="https://www.instagram.com/lahore_apex_fc?igsh=ODA3cjM5czFsZnRx" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="mailto:lafclahoreapexfootballclub@gmail.com"><i class="fas fa-envelope"></i></a>
+        <a href="mailto:lahoreapexfc@gmail.com"><i class="fas fa-envelope"></i></a>
       </div>
       <div class="copyright">
         &copy; 2025 Lahore Apex Football Club. All rights reserved.
@@ -1695,6 +1974,12 @@
 
     navToggle.addEventListener('click', () => {
       navLinks.classList.toggle('open');
+      const icon = document.getElementById('navIcon');
+      if (navLinks.classList.contains('open')) {
+        icon.className = 'fas fa-times';
+      } else {
+        icon.className = 'fas fa-bars';
+      }
     });
 
     document.querySelectorAll('.nav-links a').forEach(link => {
@@ -1713,7 +1998,7 @@
         navbar.classList.remove('scrolled');
       }
 
-      const sections = ['about', 'players', 'contracts', 'rules'];
+      const sections = ['about', 'players', 'contracts', 'full-contract', 'rules'];
       let current = '';
       sections.forEach(id => {
         const el = document.getElementById(id);
@@ -1744,6 +2029,92 @@
       auth.signOut();
     });
 
+    function updateAuthGates() {
+      const gates = document.querySelectorAll('.auth-gate');
+      gates.forEach(gate => {
+        if (currentUser) {
+          gate.classList.add('authenticated');
+        } else {
+          gate.classList.remove('authenticated');
+        }
+      });
+    }
+
+    function populateFullContractDropdown() {
+      const select = document.getElementById('fullContractSelect');
+      if (!select) return;
+      if (contracts.length === 0) {
+        select.innerHTML = '<option value="">-- No contracts available --</option>';
+        return;
+      }
+      select.innerHTML = '<option value="">-- Select a contract --</option>' +
+        contracts.map(c => `<option value="${c.id}">${c.playerName} - ${c.duration} (${c.status})</option>`).join('');
+    }
+
+    function renderFullContractDetail(contractId) {
+      const container = document.getElementById('fullContractDetail');
+      if (!contractId) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="icon"><i class="fas fa-file-contract"></i></div>
+            <p>Select a contract above to view full details.</p>
+          </div>
+        `;
+        return;
+      }
+      const contract = contracts.find(c => c.id == contractId);
+      const player = players.find(p => p.id == contract.playerId);
+      if (!contract || !player) {
+        container.innerHTML = `<p style="text-align:center;color:var(--gray);padding:24px;">Contract or player data not found.</p>`;
+        return;
+      }
+      const initials = player.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      const avatarContent = player.photo
+        ? `<img src="${player.photo}" alt="${player.name}">`
+        : initials;
+
+      container.innerHTML = `
+        <div class="header">
+          <div class="avatar-lg">${avatarContent}</div>
+          <div class="info">
+            <h3>${player.name}</h3>
+            <div class="pos">${player.position} &middot; #${player.jersey}</div>
+            ${contract.elite ? '<div style="display:inline-block;background:linear-gradient(135deg,var(--accent),#b8860b);color:var(--primary);padding:4px 16px;border-radius:50px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:8px;"><i class="fas fa-crown"></i> ELITE PLAYER</div>' : ''}
+          </div>
+        </div>
+        <div class="contract-detail-grid">
+          <div class="field">
+            <div class="label">Age</div>
+            <div class="value">${player.age}</div>
+          </div>
+          <div class="field">
+            <div class="label">Position</div>
+            <div class="value">${player.position}</div>
+          </div>
+          <div class="field">
+            <div class="label">Jersey Number</div>
+            <div class="value">${player.jersey}</div>
+          </div>
+          <div class="field">
+            <div class="label">Contract Duration</div>
+            <div class="value">${contract.duration}</div>
+          </div>
+          <div class="field">
+            <div class="label">Status</div>
+            <div class="value" style="color:${contract.status === 'Active' ? '#059669' : '#dc2626'}">${contract.status}</div>
+          </div>
+          <div class="field">
+            <div class="label">Issued On</div>
+            <div class="value">${contract.date}</div>
+          </div>
+        </div>
+        <div class="bio-field">
+          <div class="label">Player Bio</div>
+          <div class="value">${player.bio}</div>
+        </div>
+      `;
+    }
+
     auth.onAuthStateChanged(user => {
       const signInBtn = document.getElementById('googleSignInBtn');
       const userInfo = document.getElementById('userInfo');
@@ -1754,6 +2125,7 @@
         userInfo.style.display = 'flex';
         document.getElementById('userAvatar').src = user.photoURL || '';
         document.getElementById('userName').textContent = user.displayName || user.email;
+        updateAuthGates();
         loadUserData(user.uid);
       } else {
         currentUser = null;
@@ -1761,9 +2133,12 @@
         userInfo.style.display = 'none';
         players = [];
         contracts = [];
+        updateAuthGates();
         renderPlayers();
         renderContracts();
         updateContractDropdown();
+        populateFullContractDropdown();
+        renderFullContractDetail(null);
       }
     });
 
@@ -1970,6 +2345,7 @@
       const list = document.getElementById('contractList');
       const count = document.getElementById('contractCount');
       count.textContent = `${contracts.length} contract${contracts.length !== 1 ? 's' : ''}`;
+      populateFullContractDropdown();
 
       if (contracts.length === 0) {
         list.innerHTML = `
@@ -2077,10 +2453,21 @@
       if (e.target === this) this.classList.remove('open');
     });
 
+    // ─── FULL CONTRACT DROPDOWN ───
+    const fullContractSelect = document.getElementById('fullContractSelect');
+    if (fullContractSelect) {
+      fullContractSelect.addEventListener('change', function() {
+        renderFullContractDetail(this.value);
+      });
+    }
+
     // ─── INIT ───
     renderPlayers();
     renderContracts();
     updateContractDropdown();
+    populateFullContractDropdown();
+    renderFullContractDetail(null);
+    updateAuthGates();
   </script>
 </body>
 </html>
