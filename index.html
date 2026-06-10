@@ -11,6 +11,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
   <style>
     * {
       margin: 0;
@@ -966,19 +967,154 @@
       .rules-grid { grid-template-columns: 1fr; }
     }
 
+    /* ─── TEAM MOMENTS ─── */
+    #moments {
+      background: var(--light);
+    }
+    .moments-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 40px;
+    }
+    .moment-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      transition: var(--transition);
+      border: 1px solid #e5e7eb;
+    }
+    .moment-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+      border-color: transparent;
+    }
+    .moment-card .media {
+      width: 100%;
+      aspect-ratio: 16/10;
+      object-fit: cover;
+      display: block;
+      background: #e5e7eb;
+    }
+    .moment-card .info {
+      padding: 16px;
+    }
+    .moment-card .info .caption {
+      font-size: 14px;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .moment-card .info .date {
+      font-size: 12px;
+      color: var(--gray);
+    }
+    .moment-card .media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .moments-upload {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+      border: 2px dashed #e5e7eb;
+      margin-top: 32px;
+      text-align: center;
+      transition: var(--transition);
+    }
+    .moments-upload:hover {
+      border-color: var(--accent);
+    }
+    .moments-upload .upload-icon {
+      font-size: 40px;
+      color: var(--accent);
+      margin-bottom: 12px;
+      opacity: 0.5;
+    }
+    .moments-upload h4 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 18px;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .moments-upload p {
+      font-size: 13px;
+      color: var(--gray);
+      margin-bottom: 16px;
+    }
+    .moments-upload .upload-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .moments-upload .upload-row input[type="file"] {
+      max-width: 240px;
+    }
+    .moments-upload .upload-row input[type="text"] {
+      padding: 10px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: var(--transition);
+      width: 240px;
+    }
+    .moments-upload .upload-row input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(212,168,67,0.1);
+    }
+    .moments-empty {
+      text-align: center;
+      padding: 60px 24px;
+      color: var(--gray);
+    }
+    .moments-empty .icon {
+      font-size: 48px;
+      opacity: 0.3;
+      margin-bottom: 16px;
+    }
+    .moments-empty h4 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 20px;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .moments-empty p {
+      font-size: 14px;
+    }
+
     /* ─── FOOTER ─── */
     footer {
       background: var(--primary);
-      padding: 48px 0 24px;
+      padding: 48px 0 0;
       color: rgba(255,255,255,0.7);
     }
 
-    footer .container {
+    footer .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    footer .footer-left {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 24px;
+      gap: 16px;
+    }
+
+    footer .footer-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 16px;
+      text-align: right;
     }
 
     footer .logo-icon {
@@ -1011,9 +1147,29 @@
       letter-spacing: 2px;
     }
 
+    footer .contact-text {
+      font-size: 13px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.65);
+      max-width: 480px;
+    }
+
+    footer .contact-text strong {
+      color: var(--accent);
+    }
+
+    footer .contact-text a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    footer .contact-text a:hover {
+      text-decoration: underline;
+    }
+
     footer .social {
       display: flex;
-      gap: 16px;
+      gap: 12px;
     }
 
     footer .social a {
@@ -1036,11 +1192,28 @@
       transform: translateY(-3px);
     }
 
+    footer .designed-by {
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.5px;
+    }
+
+    footer .designed-by strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
     footer .copyright {
       font-size: 13px;
       border-top: 1px solid rgba(255,255,255,0.08);
-      padding-top: 20px;
-      width: 100%;
+      padding: 20px 0;
+      margin-top: 32px;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      footer .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+      footer .footer-right { align-items: flex-start; text-align: left; }
     }
 
     /* ─── MODAL ─── */
@@ -1559,6 +1732,7 @@
         <li><a href="#players">Players</a></li>
         <li><a href="#contracts">Contracts</a></li>
         <li><a href="#full-contract">Full Contract</a></li>
+        <li><a href="#moments">Moments</a></li>
         <li><a href="#rules">Rules</a></li>
         <li style="margin-left:8px;">
           <button class="google-btn" id="googleSignInBtn"><i class="fab fa-google"></i> Sign In</button>
@@ -1907,22 +2081,68 @@
     </div>
   </section>
 
+  <!-- ═══ TEAM MOMENTS ═══ -->
+  <section id="moments">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-label justify-center" style="justify-content:center;">Gallery</div>
+        <h2 class="section-title">Team Moments</h2>
+        <p class="section-sub mx-auto">Capture and share your favorite moments with the team.</p>
+      </div>
+
+      <div class="moments-upload auth-gate" id="momentsUploadGate">
+        <div class="auth-overlay" id="momentsUploadOverlay">
+          <div class="icon"><i class="fas fa-lock"></i></div>
+          <h4>Sign In Required</h4>
+          <p>Sign in with Google to share your team moments.</p>
+          <button class="google-btn" onclick="document.getElementById('googleSignInBtn').click()"><i class="fab fa-google"></i> Sign In with Google</button>
+        </div>
+        <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+        <h4>Add a Moment</h4>
+        <p>Upload a photo or video to share with the team.</p>
+        <div class="upload-row">
+          <input type="file" id="momentFile" accept="image/*,video/*">
+          <input type="text" id="momentCaption" placeholder="Write a caption...">
+        </div>
+        <div style="margin-top:12px;">
+          <button class="btn btn-primary" id="uploadMomentBtn"><i class="fas fa-upload"></i> Upload Moment</button>
+        </div>
+      </div>
+
+      <div class="moments-grid" id="momentsGrid">
+        <div class="moments-empty" id="momentsEmpty">
+          <div class="icon"><i class="fas fa-images"></i></div>
+          <h4>No Moments Yet</h4>
+          <p>Be the first to share a team moment!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ FOOTER ═══ -->
   <footer>
+    <div class="container footer-grid">
+      <div class="footer-left">
+        <div class="logo-icon"><img src="logo.svg" alt="LAFC Logo"></div>
+        <div class="club-name">Lahore Apex Football Club</div>
+        <div class="motto">&ldquo;Rise Above, Play Beyond.&rdquo;</div>
+        <div class="contact-text">
+          For sponsorship, funding, partnership and more information please contact via WhatsApp
+          <strong>+92 329 4427334</strong> and <strong>03244817189</strong> or email
+          <a href="mailto:lahoreapexfc@gmail.com">lahoreapexfc@gmail.com</a>
+        </div>
+      </div>
+      <div class="footer-right">
+        <div class="social">
+          <a href="https://chat.whatsapp.com/HvaEb9RBlRXFYYsZ7UZCsg" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://www.instagram.com/lahore_apex_fc?igsh=ODA3cjM5czFsZnRx" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="mailto:lahoreapexfc@gmail.com"><i class="fas fa-envelope"></i></a>
+        </div>
+        <div class="designed-by">Designed by <strong>Aliyan Liaq</strong></div>
+      </div>
+    </div>
     <div class="container">
-      <div class="logo-icon"><img src="logo.svg" alt="LAFC Logo"></div>
-      <div class="club-name">Lahore Apex Football Club</div>
-      <div class="motto">&ldquo;Rise Above, Play Beyond.&rdquo;</div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:rgba(255,255,255,0.7);">
-        <i class="fas fa-envelope" style="color:var(--accent);"></i>
-        <a href="mailto:lahoreapexfc@gmail.com" style="color:rgba(255,255,255,0.7);text-decoration:none;">lahoreapexfc@gmail.com</a>
-      </div>
-      <div class="social">
-        <a href="https://chat.whatsapp.com/HvaEb9RBlRXFYYsZ7UZCsg" target="_blank"><i class="fab fa-whatsapp"></i></a>
-        <a href="#"><i class="fab fa-facebook-f"></i></a>
-        <a href="https://www.instagram.com/lahore_apex_fc?igsh=ODA3cjM5czFsZnRx" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="mailto:lahoreapexfc@gmail.com"><i class="fas fa-envelope"></i></a>
-      </div>
       <div class="copyright">
         &copy; 2025 Lahore Apex Football Club. All rights reserved.
       </div>
@@ -1961,10 +2181,12 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
+    const storage = firebase.storage();
 
     // ─── STATE ───
     let players = [];
     let contracts = [];
+    let moments = [];
     let currentUser = null;
     let syncTimeout = null;
 
@@ -1998,7 +2220,7 @@
         navbar.classList.remove('scrolled');
       }
 
-      const sections = ['about', 'players', 'contracts', 'full-contract', 'rules'];
+      const sections = ['about', 'players', 'contracts', 'full-contract', 'moments', 'rules'];
       let current = '';
       sections.forEach(id => {
         const el = document.getElementById(id);
@@ -2133,9 +2355,11 @@
         userInfo.style.display = 'none';
         players = [];
         contracts = [];
+        moments = [];
         updateAuthGates();
         renderPlayers();
         renderContracts();
+        renderMoments();
         updateContractDropdown();
         populateFullContractDropdown();
         renderFullContractDetail(null);
@@ -2167,6 +2391,15 @@
           batch.set(ref, { ...c });
         });
 
+        // Save moments
+        const momentCol = db.collection('users').doc(uid).collection('moments');
+        const momentSnap = await momentCol.get();
+        momentSnap.forEach(doc => batch.delete(doc.ref));
+        moments.forEach(m => {
+          const ref = momentCol.doc(String(m.id));
+          batch.set(ref, { ...m });
+        });
+
         await batch.commit();
       } catch (err) {
         console.error('Sync error:', err);
@@ -2186,11 +2419,17 @@
         contracts = [];
         contractSnap.forEach(doc => contracts.push(doc.data()));
 
+        const momentCol = db.collection('users').doc(uid).collection('moments');
+        const momentSnap = await momentCol.get();
+        moments = [];
+        momentSnap.forEach(doc => moments.push(doc.data()));
+
         renderPlayers();
         renderContracts();
+        renderMoments();
         updateContractDropdown();
 
-        if (players.length || contracts.length) {
+        if (players.length || contracts.length || moments.length) {
           showToast('Data loaded from cloud!');
         }
       } catch (err) {
@@ -2453,6 +2692,87 @@
       if (e.target === this) this.classList.remove('open');
     });
 
+    // ─── MOMENTS ───
+    function renderMoments() {
+      const grid = document.getElementById('momentsGrid');
+      const empty = document.getElementById('momentsEmpty');
+      if (moments.length === 0) {
+        grid.innerHTML = `
+          <div class="moments-empty">
+            <div class="icon"><i class="fas fa-images"></i></div>
+            <h4>No Moments Yet</h4>
+            <p>Be the first to share a team moment!</p>
+          </div>
+        `;
+        return;
+      }
+      grid.innerHTML = moments.map(m => {
+        const isVideo = m.type && m.type.startsWith('video/');
+        const mediaEl = isVideo
+          ? `<video class="media" controls><source src="${m.url}" type="${m.type}"></video>`
+          : `<img class="media" src="${m.url}" alt="${m.caption || 'Team moment'}">`;
+        return `
+          <div class="moment-card" data-id="${m.id}">
+            ${mediaEl}
+            <div class="info">
+              <div class="caption">${m.caption || 'No caption'}</div>
+              <div class="date"><i class="far fa-calendar-alt" style="margin-right:4px;"></i>${m.date || ''}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    document.getElementById('uploadMomentBtn').addEventListener('click', async function() {
+      const fileInput = document.getElementById('momentFile');
+      const captionInput = document.getElementById('momentCaption');
+
+      if (!fileInput.files || !fileInput.files[0]) {
+        showToast('Please select a file to upload.');
+        return;
+      }
+
+      if (!currentUser) {
+        showToast('Please sign in first.');
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const caption = captionInput.value.trim();
+      const btn = this;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+
+      try {
+        const storageRef = storage.ref(`moments/${currentUser.uid}/${Date.now()}_${file.name}`);
+        const snapshot = await storageRef.put(file);
+        const url = await snapshot.ref.getDownloadURL();
+
+        const moment = {
+          id: Date.now(),
+          url,
+          caption: caption || 'No caption',
+          type: file.type,
+          date: new Date().toLocaleDateString('en-GB'),
+          userId: currentUser.uid,
+          userName: currentUser.displayName || currentUser.email
+        };
+
+        moments.push(moment);
+        renderMoments();
+        fileInput.value = '';
+        captionInput.value = '';
+        triggerSync();
+        showToast('Moment uploaded successfully!');
+      } catch (err) {
+        console.error('Upload error:', err);
+        showToast('Failed to upload. ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-upload"></i> Upload Moment';
+      }
+    });
+
     // ─── FULL CONTRACT DROPDOWN ───
     const fullContractSelect = document.getElementById('fullContractSelect');
     if (fullContractSelect) {
@@ -2464,6 +2784,7 @@
     // ─── INIT ───
     renderPlayers();
     renderContracts();
+    renderMoments();
     updateContractDropdown();
     populateFullContractDropdown();
     renderFullContractDetail(null);
